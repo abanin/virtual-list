@@ -14,7 +14,7 @@ function getItemHeight(item: number) {
   return item % 2 ? 100 : 50;
 }
 
-const items = createItems(1000);
+const items = createItems(999);
 
 function App() {
   return (

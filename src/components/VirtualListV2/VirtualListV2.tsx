@@ -25,28 +25,27 @@ const VirtualList = <T extends unknown>({
     setScrollTop(e.currentTarget.scrollTop);
   };
 
-  const listHolderHeight = useMemo(() => {
-    return items.reduce((totalHeight, item, idx) => {
-      totalHeight += getItemHeight(item, idx);
-      return totalHeight;
-    }, 0);
-  }, [items, getItemHeight]);
-
-  const heightsCache = useMemo(() => {
-    return items.reduce<number[]>((arrayHeight, _item, idx) => {
+  const positionsCache = useMemo(() => {
+    return items.reduce<number[]>((positions, _item, idx) => {
       if (idx === 0) {
-        arrayHeight[idx] = 0;
+        positions[idx] = 0;
       } else {
-        arrayHeight[idx] =
-          getItemHeight(items[idx - 1], idx) + arrayHeight[idx - 1];
+        positions[idx] =
+          getItemHeight(items[idx - 1], idx) + positions[idx - 1];
       }
 
-      return arrayHeight;
+      return positions;
     }, []);
   }, [items, getItemHeight]);
 
+  const listHolderHeight =
+    items.length > 0
+      ? positionsCache[items.length - 1] +
+        getItemHeight(items[items.length - 1], items.length - 1)
+      : 0;
+
   const getIdx = (scrollTop: number) => {
-    const idx = heightsCache.findIndex((height) => height >= scrollTop);
+    const idx = positionsCache.findIndex((height) => height >= scrollTop);
     return idx < 0 ? items.length - 1 : idx - 1;
   };
 
@@ -64,7 +63,7 @@ const VirtualList = <T extends unknown>({
         <ul
           className={styles.list}
           style={{
-            transform: `translateY(${heightsCache[startIdx]}px)`,
+            transform: `translateY(${positionsCache[startIdx]}px)`,
           }}
         >
           {renderedItems.map((item, idx) => (
