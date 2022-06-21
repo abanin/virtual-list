@@ -1,4 +1,5 @@
 import VirtualList from "./components/VirtualList";
+import VirtualListV2 from "./components/VirtualListV2";
 import { createItems } from "./helpers";
 
 function renderItem(item: number) {
@@ -9,7 +10,11 @@ function keyAccessor(item: number) {
   return item.toString();
 }
 
-const items = createItems(10000);
+function getItemHeight(item: number) {
+  return item % 2 ? 100 : 50;
+}
+
+const items = createItems(1000);
 
 function App() {
   return (
@@ -19,6 +24,15 @@ function App() {
           height={200}
           items={items}
           itemHeight={50}
+          renderItem={renderItem}
+          keyAccessor={keyAccessor}
+        />
+      </div>
+      <div className="container">
+        <VirtualListV2
+          height={300}
+          items={items}
+          getItemHeight={getItemHeight}
           renderItem={renderItem}
           keyAccessor={keyAccessor}
         />
