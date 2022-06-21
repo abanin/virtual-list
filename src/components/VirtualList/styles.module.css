@@ -1,0 +1,25 @@
+.listWrapper {
+  display: block;
+  overflow: auto;
+}
+
+.listHolder {
+  position: relative;
+  overflow: hidden;
+}
+
+.list {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.item {
+  border-bottom: 1px solid violet;
+  display: block;
+  width: 100%;
+}
